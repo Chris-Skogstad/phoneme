@@ -11,6 +11,14 @@ import { generateWordSearchHTML } from "../lib/generateWordSearchHTML";
 import { wordSearchWords } from "../lib/wordSearchWords";
 import { phonemeLegend } from "../lib/phonemeLegend";
 import Button from "../components/Button";
+import Tooltip from "../components/Tooltip";
+import PhonemeTile from "../components/PhonemeTile";
+import DifficultySelector from "../components/DifficultySelector";
+import PageHeading from "../components/PageHeading";
+
+const difficultyOptions = (Object.keys(DIFFICULTY_SETTINGS) as Difficulty[]).map(
+  (key) => ({ value: key, label: DIFFICULTY_SETTINGS[key].label })
+);
 
 export default function WordSearchPage() {
   const [gridData, setGridData] = useState<WordSearchGrid | null>(null);
@@ -54,45 +62,27 @@ export default function WordSearchPage() {
 
   return (
     <main className="flex flex-col items-center py-10 px-4">
-      <h1 className="text-2xl font-bold mb-2">Word Search Builder</h1>
-      <p className="text-gray-600 mb-6 text-center max-w-md">
-        Preview the phoneme word search below, adjust difficulty, then
-        download it as a standalone activity for students.
-      </p>
+      <PageHeading
+        title="Word Search Builder"
+        description="Preview the phoneme word search below, adjust difficulty, then download it as a standalone activity for students."
+      />
 
-      {/* Difficulty settings */}
-      <div className="flex gap-2 mb-6">
-        {(Object.keys(DIFFICULTY_SETTINGS) as Difficulty[]).map((level) => (
-          <button
-            key={level}
-            onClick={() => setDifficulty(level)}
-            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
-              difficulty === level
-                ? "bg-indigo-600 text-white"
-                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-            }`}
-          >
-            {DIFFICULTY_SETTINGS[level].label}
-          </button>
-        ))}
-      </div>
+      <DifficultySelector
+        options={difficultyOptions}
+        value={difficulty}
+        onChange={setDifficulty}
+      />
 
-      {/* Word list — phoneme word is the clear primary display, hover reveals English */}
       <div className="flex gap-4 flex-wrap justify-center mb-6">
         {wordSearchWords.map((w) => (
-          <div
-            key={w.english}
-            className="group relative px-3 py-1 bg-gray-100 rounded-md cursor-default font-medium"
-          >
-            {w.phonemes.join(" ")}
-            <span className="absolute left-1/2 -translate-x-1/2 -top-8 hidden group-hover:block bg-black text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
-              {w.english}
-            </span>
-          </div>
+          <Tooltip key={w.english} label={w.english}>
+            <div className="px-3 py-1 bg-gray-100 rounded-md font-medium">
+              {w.phonemes.join(" ")}
+            </div>
+          </Tooltip>
         ))}
       </div>
 
-      {/* Grid — each cell hoverable with its letter-equivalence legend */}
       <div
         className="grid gap-1 mb-6"
         style={{
@@ -103,33 +93,31 @@ export default function WordSearchPage() {
           row.map((token, c) => {
             const isAnswer = answerCellKeys.has(`${r}-${c}`);
             return (
-              <div
+              <PhonemeTile
                 key={`${r}-${c}`}
-                className={`group relative w-9 h-9 flex items-center justify-center text-sm font-bold rounded transition-colors cursor-default ${
-                  isAnswer ? "bg-indigo-500 text-white" : "bg-gray-800 text-white"
-                }`}
-              >
-                {token}
-                <span className="absolute left-1/2 -translate-x-1/2 -top-8 hidden group-hover:block bg-black text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
-                  {phonemeLegend[token] ?? token}
-                </span>
-              </div>
+                token={token}
+                state={isAnswer ? "answer" : "default"}
+                hint={phonemeLegend[token] ?? token}
+              />
             );
           })
         )}
       </div>
 
-     <div className="flex gap-3 flex-wrap justify-center">
-  <Button variant="secondary" onClick={handleRefresh}>
-    Refresh
-  </Button>
-  <Button variant="warning" onClick={() => setShowAnswers((prev) => !prev)}>
-    {showAnswers ? "Hide Answers" : "Show Answers"}
-  </Button>
-  <Button variant="primary" onClick={handleGenerate}>
-    Generate & Download
-  </Button>
-</div>
+      <div className="flex gap-3 flex-wrap justify-center">
+        <Button variant="secondary" onClick={handleRefresh}>
+          Refresh
+        </Button>
+        <Button
+          variant="warning"
+          onClick={() => setShowAnswers((prev) => !prev)}
+        >
+          {showAnswers ? "Hide Answers" : "Show Answers"}
+        </Button>
+        <Button variant="primary" onClick={handleGenerate}>
+          Generate & Download
+        </Button>
+      </div>
     </main>
   );
 }
