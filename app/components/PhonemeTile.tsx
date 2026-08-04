@@ -9,6 +9,8 @@ type PhonemeTileProps = {
   state?: TileState;
   hint?: string;
   size?: "sm" | "md" | "lg";
+  onClick?: () => void;
+  disabled?: boolean;
 };
 
 const stateStyles: Record<TileState, string> = {
@@ -30,13 +32,21 @@ export default function PhonemeTile({
   state = "default",
   hint,
   size = "md",
+  onClick,
+  disabled,
 }: PhonemeTileProps) {
-  const tile = (
-    <div
-      className={`flex items-center justify-center font-bold rounded transition-colors ${stateStyles[state]} ${sizeStyles[size]}`}
+  const baseClasses = `flex items-center justify-center font-bold rounded transition-colors ${stateStyles[state]} ${sizeStyles[size]}`;
+
+  const tile = onClick ? (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`${baseClasses} hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer`}
     >
       {token}
-    </div>
+    </button>
+  ) : (
+    <div className={baseClasses}>{token}</div>
   );
 
   if (!hint) return tile;
