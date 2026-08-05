@@ -7,6 +7,8 @@ type Theme = "light" | "dark";
 type ThemeContextType = {
   theme: Theme;
   toggleTheme: () => void;
+  hasConsent: boolean;
+  grantConsent: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -19,18 +21,31 @@ export function ThemeProvider({
   initialTheme: Theme;
 }) {
   const [theme, setTheme] = useState<Theme>(initialTheme);
+  const [hasConsent, setHasConsent] = useState(false);
+
+  useEffect(() => {
+    setHasConsent(document.cookie.includes("cookie-consent=true"));
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
-    document.cookie = `theme=${theme}; path=/; max-age=31536000`;
-  }, [theme]);
+    if (hasConsent) {
+      document.cookie = `theme=${theme}; path=/; max-age=31536000`;
+    }
+  }, [theme, hasConsent]);
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
   };
 
+  const grantConsent = () => {
+    setHasConsent(true);
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{ theme, toggleTheme, hasConsent, grantConsent }}
+    >
       {children}
     </ThemeContext.Provider>
   );
