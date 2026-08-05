@@ -15,7 +15,7 @@ export default function Nav() {
   const pathname = usePathname();
 
   return (
-    <nav className="bg-gray-800 px-4 py-3">
+    <nav className="bg-gray-800 dark:bg-gray-950 px-4 py-3 transition-colors">
       <ul className="flex flex-wrap justify-center gap-6">
         {links.map((link) => {
           const isActive = pathname === link.href;

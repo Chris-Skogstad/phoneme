@@ -1,34 +1,8 @@
 export default function Footer() {
   return (
-    <footer
-      style={{
-        backgroundColor: "#1a1a1a",
-        color: "#f5f5f5",
-        padding: "24px 16px",
-        textAlign: "center",
-        marginTop: "auto",
-        borderTop: "3px solid #4f46e5",
-      }}
-    >
-      <p
-        style={{
-          margin: 0,
-          fontSize: "0.95rem",
-          fontWeight: 500,
-          letterSpacing: "0.02em",
-        }}
-      >
-        Christopher Skogstad
-      </p>
-      <p
-        style={{
-          margin: "4px 0 0",
-          fontSize: "0.8rem",
-          color: "#a3a3a3",
-        }}
-      >
-        Student Number: 21198609
-      </p>
+    <footer className="bg-gray-900 dark:bg-black text-gray-100 border-t-4 border-indigo-600 py-6 px-4 text-center mt-auto transition-colors">
+      <p className="font-medium tracking-wide">Christopher Skogstad</p>
+      <p className="text-sm text-gray-400 mt-1">Student Number: 21198609</p>
     </footer>
   );
 }
