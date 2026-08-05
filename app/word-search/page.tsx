@@ -48,7 +48,7 @@ export default function WordSearchPage() {
 
   if (!gridData) {
     return (
-      <main className="flex flex-col items-center py-10 px-4">
+      <main className="flex flex-col items-center py-10 px-4 min-h-screen bg-white dark:bg-gray-900 transition-colors">
         <p className="text-gray-500">Generating word search...</p>
       </main>
     );
@@ -61,7 +61,7 @@ export default function WordSearchPage() {
   );
 
   return (
-    <main className="flex flex-col items-center py-10 px-4">
+    <main className="flex flex-col items-center py-10 px-4 min-h-screen bg-white dark:bg-gray-900 transition-colors">
       <PageHeading
         title="Word Search Builder"
         description="Preview the phoneme word search below, adjust difficulty, then download it as a standalone activity for students."
@@ -73,15 +73,15 @@ export default function WordSearchPage() {
         onChange={setDifficulty}
       />
 
-      <div className="flex gap-4 flex-wrap justify-center mb-6">
-        {wordSearchWords.map((w) => (
-          <Tooltip key={w.english} label={w.english}>
-            <div className="px-3 py-1 bg-gray-100 rounded-md font-medium">
-              {w.phonemes.join(" ")}
-            </div>
-          </Tooltip>
-        ))}
+     <div className="flex gap-4 flex-wrap justify-center mb-6">
+  {wordSearchWords.map((w) => (
+    <Tooltip key={w.english} label={w.english}>
+      <div className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md font-medium">
+        {w.phonemes.join(" ")}
       </div>
+    </Tooltip>
+  ))}
+</div>
 
       <div
         className="grid gap-1 mb-6"
