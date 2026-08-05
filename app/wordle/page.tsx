@@ -83,7 +83,7 @@ export default function WordlePage() {
   };
 
   return (
-    <main className="flex flex-col items-center py-10 px-4">
+    <main className="flex flex-col items-center py-10 px-4 min-h-screen bg-white dark:bg-gray-900 transition-colors">
       <PageHeading
         title="Wordle Builder"
         description="Preview the phoneme Wordle activity below, adjust difficulty, then download it as a standalone game for students."
@@ -95,11 +95,11 @@ export default function WordlePage() {
         onChange={setDifficulty}
       />
 
-      {revealAnswer && (
-        <div className="mb-4 px-4 py-2 bg-indigo-100 text-indigo-800 rounded-md font-medium">
-          Answer: {target.phonemes.join(" ")} → {target.english}
-        </div>
-      )}
+    {revealAnswer && (
+  <div className="mb-4 px-4 py-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-md font-medium">
+    Answer: {target.phonemes.join(" ")} → {target.english}
+  </div>
+)}
 
       <div className="flex flex-col gap-1 mb-4">
         {Array.from({ length: maxGuesses }).map((_, r) => (
@@ -129,19 +129,19 @@ export default function WordlePage() {
         ))}
       </div>
 
-      <div className="min-h-[1.5em] mb-4 font-bold text-center">
-        {status === "won" && (
-          <span className="text-green-600">
-            🎉 Correct! {target.phonemes.join(" ")} → {target.english}
-          </span>
-        )}
-        {status === "lost" && (
-          <span className="text-red-600">
-            Out of guesses. The word was {target.phonemes.join(" ")} →{" "}
-            {target.english}
-          </span>
-        )}
-      </div>
+   <div className="min-h-[1.5em] mb-4 font-bold text-center">
+  {status === "won" && (
+    <span className="text-green-600 dark:text-green-400">
+      🎉 Correct! {target.phonemes.join(" ")} → {target.english}
+    </span>
+  )}
+  {status === "lost" && (
+    <span className="text-red-600 dark:text-red-400">
+      Out of guesses. The word was {target.phonemes.join(" ")} →{" "}
+      {target.english}
+    </span>
+  )}
+</div>
 
       <PhonemeKeyboard
         onKeyPress={handleKeyPress}
