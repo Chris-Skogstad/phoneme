@@ -1,3 +1,5 @@
+import { Locale } from "./locales";
+
 export type WordleWord = {
   english: string;
   phonemes: string[];
@@ -11,8 +13,20 @@ export const wordleDifficultySettings = {
 
 export type WordleDifficulty = keyof typeof wordleDifficultySettings;
 
-export const wordleWords: Record<WordleDifficulty, WordleWord> = {
-  easy: { english: "SHIP", phonemes: ["ʃ", "ɪ", "p"] },
-  medium: { english: "THIN", phonemes: ["θ", "ɪ", "n"] },
-  hard: { english: "STRING", phonemes: ["s", "t", "r", "ɪ", "ŋ"] },
+export const wordleWordsByLocale: Record<Locale, Record<WordleDifficulty, WordleWord>> = {
+  au: {
+    easy: { english: "CAR", phonemes: ["k", "ɑː"] },
+    medium: { english: "BATH", phonemes: ["b", "ɑː", "θ"] },
+    hard: { english: "WATER", phonemes: ["w", "ɔː", "t", "ə"] },
+  },
+  uk: {
+    easy: { english: "CAR", phonemes: ["k", "ɑː"] },
+    medium: { english: "BATH", phonemes: ["b", "ɑː", "θ"] },
+    hard: { english: "WATER", phonemes: ["w", "ɔː", "t", "ə"] },
+  },
+  us: {
+    easy: { english: "CAR", phonemes: ["k", "ɑ", "r"] },
+    medium: { english: "BATH", phonemes: ["b", "æ", "θ"] },
+    hard: { english: "WATER", phonemes: ["w", "ɑ", "ɾ", "ɚ"] },
+  },
 };
