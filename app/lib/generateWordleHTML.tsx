@@ -31,6 +31,9 @@ export function generateWordleHTML(
   .key:hover { background: #4b5563; }
   .key .key-hint { display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: black; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; white-space: nowrap; z-index: 10; }
   .key:hover .key-hint { display: block; }
+  .key.correct { background: #16a34a; }
+  .key.wrong-position { background: #d97706; }
+  .key.absent { background: #4b5563; opacity: 0.5; }
   #controls { display: flex; gap: 12px; margin-bottom: 16px; }
   button.action { padding: 8px 16px; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
   #backspace { background: #4b5563; color: white; }
@@ -127,11 +130,28 @@ export function generateWordleHTML(
     }
   }
 
+  function computeKeyStates() {
+    const priority = { absent: 0, "wrong-position": 1, correct: 2 };
+    const states = {};
+    guesses.forEach((guess) => {
+      guess.forEach(({ token, state }) => {
+        if (!states[token] || priority[state] > priority[states[token]]) {
+          states[token] = state;
+        }
+      });
+    });
+    return states;
+  }
+
   function renderKeyboard() {
+    const keyStates = computeKeyStates();
     keyboardEl.innerHTML = "";
     keyboardTokens.forEach((token) => {
       const key = document.createElement("button");
       key.className = "key";
+      if (keyStates[token]) {
+        key.classList.add(keyStates[token]);
+      }
       key.textContent = token;
 
       const hint = document.createElement("span");
@@ -183,6 +203,7 @@ export function generateWordleHTML(
     }
 
     renderBoard();
+    renderKeyboard();
   });
 
   renderBoard();
