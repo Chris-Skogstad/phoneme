@@ -6,11 +6,14 @@ import { useLocale } from "../context/LocaleContext";
 import PhonemeTile from "./PhonemeTile";
 import Button from "./Button";
 
+type KeyState = "default" | "correct" | "wrong-position" | "absent";
+
 type PhonemeKeyboardProps = {
   onKeyPress: (token: string) => void;
   onBackspace: () => void;
   onSubmit: () => void;
   disabled?: boolean;
+  keyStates?: Record<string, KeyState>;
 };
 
 export default function PhonemeKeyboard({
@@ -18,6 +21,7 @@ export default function PhonemeKeyboard({
   onBackspace,
   onSubmit,
   disabled,
+  keyStates = {},
 }: PhonemeKeyboardProps) {
   const { locale } = useLocale();
   const keys = getPhonemeKeyboard(locale);
@@ -30,6 +34,7 @@ export default function PhonemeKeyboard({
             key={token}
             token={token}
             size="kb"
+            state={keyStates[token] ?? "default"}
             hint={phonemeLegend[token]}
             onClick={() => onKeyPress(token)}
             disabled={disabled}

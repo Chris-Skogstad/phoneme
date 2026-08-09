@@ -6,7 +6,7 @@ import {
   wordleDifficultySettings,
   WordleDifficulty,
 } from "../lib/wordleWords";
-import { evaluateGuess, GuessResult } from "../lib/wordleLogic";
+import { evaluateGuess, computeKeyStates, GuessResult } from "../lib/wordleLogic";
 import { generateWordleHTML } from "../lib/generateWordleHTML";
 import { phonemeLegend } from "../lib/phonemeLegend";
 import { useLocale } from "../context/LocaleContext";
@@ -80,11 +80,14 @@ export default function WordlePage() {
   const blob = new Blob([html], { type: "text/html" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
+  
   link.href = url;
   link.download = "phoneme-wordle.html";
   link.click();
   URL.revokeObjectURL(url);
 };
+
+const keyStates = computeKeyStates(guesses);
 
   return (
     <main className="flex flex-col items-center py-10 px-4 min-h-screen bg-white dark:bg-gray-900 transition-colors">
@@ -148,11 +151,12 @@ export default function WordlePage() {
       </div>
 
       <PhonemeKeyboard
-        onKeyPress={handleKeyPress}
-        onBackspace={handleBackspace}
-        onSubmit={handleSubmit}
-        disabled={status !== "playing"}
-      />
+  onKeyPress={handleKeyPress}
+  onBackspace={handleBackspace}
+  onSubmit={handleSubmit}
+  disabled={status !== "playing"}
+  keyStates={keyStates}
+/>
 
       <div className="flex gap-3 flex-wrap justify-center mt-6">
         <Button variant="secondary" onClick={handleNewGame}>
