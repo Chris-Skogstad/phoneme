@@ -8,7 +8,8 @@ import {
   Difficulty,
 } from "../lib/generateGrid";
 import { generateWordSearchHTML } from "../lib/generateWordSearchHTML";
-import { wordSearchWords } from "../lib/wordSearchWords";
+import { useLocale } from "../context/LocaleContext";
+import { wordSearchWordsByLocale } from "../lib/wordSearchWords";
 import { phonemeLegend } from "../lib/phonemeLegend";
 import Button from "../components/Button";
 import Tooltip from "../components/Tooltip";
@@ -21,13 +22,16 @@ const difficultyOptions = (Object.keys(DIFFICULTY_SETTINGS) as Difficulty[]).map
 );
 
 export default function WordSearchPage() {
+  const { locale } = useLocale();
+  const wordSearchWords = wordSearchWordsByLocale[locale];
+
   const [gridData, setGridData] = useState<WordSearchGrid | null>(null);
   const [showAnswers, setShowAnswers] = useState(false);
   const [difficulty, setDifficulty] = useState<Difficulty>("medium");
 
   useEffect(() => {
     setGridData(generateGrid(wordSearchWords, DIFFICULTY_SETTINGS[difficulty].size));
-  }, [difficulty]);
+  }, [difficulty, locale]);
 
   const handleRefresh = () => {
     setGridData(generateGrid(wordSearchWords, DIFFICULTY_SETTINGS[difficulty].size));
@@ -73,15 +77,15 @@ export default function WordSearchPage() {
         onChange={setDifficulty}
       />
 
-     <div className="flex gap-4 flex-wrap justify-center mb-6">
-  {wordSearchWords.map((w) => (
-    <Tooltip key={w.english} label={w.english}>
-      <div className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md font-medium">
-        {w.phonemes.join(" ")}
+      <div className="flex gap-4 flex-wrap justify-center mb-6">
+        {wordSearchWords.map((w) => (
+          <Tooltip key={w.english} label={w.english}>
+            <div className="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md font-medium">
+              {w.phonemes.join(" ")}
+            </div>
+          </Tooltip>
+        ))}
       </div>
-    </Tooltip>
-  ))}
-</div>
 
       <div
         className="grid gap-1 mb-6"
