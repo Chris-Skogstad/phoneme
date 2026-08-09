@@ -87,26 +87,28 @@ export default function WordSearchPage() {
         ))}
       </div>
 
-      <div
-        className="grid gap-1 mb-6"
-        style={{
-          gridTemplateColumns: `repeat(${gridData.grid.length}, 36px)`,
-        }}
-      >
-        {gridData.grid.map((row, r) =>
-          row.map((token, c) => {
-            const isAnswer = answerCellKeys.has(`${r}-${c}`);
-            return (
-              <PhonemeTile
-                key={`${r}-${c}`}
-                token={token}
-                state={isAnswer ? "answer" : "default"}
-                hint={phonemeLegend[token] ?? token}
-              />
-            );
-          })
-        )}
-      </div>
+   <div
+  className="grid gap-1 mb-6 mx-auto w-full"
+  style={{
+    gridTemplateColumns: `repeat(${gridData.grid.length}, minmax(0, 1fr))`,
+    maxWidth: `${gridData.grid.length * 36 + (gridData.grid.length - 1) * 4}px`,
+  }}
+>
+  {gridData.grid.map((row, r) =>
+    row.map((token, c) => {
+      const isAnswer = answerCellKeys.has(`${r}-${c}`);
+      return (
+        <PhonemeTile
+          key={`${r}-${c}`}
+          token={token}
+          state={isAnswer ? "answer" : "default"}
+          hint={phonemeLegend[token] ?? token}
+          size="responsive"
+        />
+      );
+    })
+  )}
+</div>
 
       <div className="flex gap-3 flex-wrap justify-center">
         <Button variant="secondary" onClick={handleRefresh}>
