@@ -1,40 +1,43 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import HamburgerMenu from "./HamburgerMenu";
 
 const links = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
   { href: "/wordle", label: "Wordle" },
   { href: "/word-search", label: "Word Search" },
-  { href: "/settings", label: "Settings" },
 ];
 
 export default function Nav() {
-  const router = useRouter();
   const pathname = usePathname();
 
   return (
     <nav className="bg-gray-800 dark:bg-gray-950 px-4 py-3 transition-colors">
-      <ul className="flex flex-wrap justify-center gap-6">
-        {links.map((link) => {
-          const isActive = pathname === link.href;
-          return (
-            <li key={link.href}>
-              <button
-                onClick={() => router.push(link.href)}
-                className={`text-sm font-medium transition-colors cursor-pointer ${
-                  isActive
-                    ? "text-indigo-400 border-b-2 border-indigo-400 pb-1"
-                    : "text-gray-300 hover:text-white"
-                }`}
-              >
-                {link.label}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="flex items-center justify-between max-w-5xl mx-auto">
+        <ul className="flex flex-wrap gap-6">
+          {links.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors ${
+                    isActive
+                      ? "text-indigo-400 border-b-2 border-indigo-400 pb-1"
+                      : "text-gray-300 hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+
+        <HamburgerMenu />
+      </div>
     </nav>
   );
 }
