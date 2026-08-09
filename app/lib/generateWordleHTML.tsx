@@ -1,8 +1,15 @@
 import { WordleWord } from "./wordleWords";
-import { phonemeKeyboard } from "./phonemeKeyboard";
+import { getPhonemeKeyboard } from "./phonemeKeyboard";
 import { phonemeLegend } from "./phonemeLegend";
+import { Locale } from "./locales";
 
-export function generateWordleHTML(word: WordleWord, maxGuesses: number): string {
+export function generateWordleHTML(
+  word: WordleWord,
+  maxGuesses: number,
+  locale: Locale
+): string {
+  const keyboardTokens = getPhonemeKeyboard(locale);
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +27,7 @@ export function generateWordleHTML(word: WordleWord, maxGuesses: number): string
   .tile-hint { display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: black; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; white-space: nowrap; z-index: 10; }
   .tile:hover .tile-hint { display: block; }
   #keyboard { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; max-width: 480px; margin-bottom: 16px; }
-  .key { position: relative; padding: 8px 10px; background: #374151; border: none; border-radius: 4px; color: white; font-weight: bold; cursor: pointer; }
+  .key { position: relative; padding: 12px 16px; font-size: 1.1rem; background: #374151; border: none; border-radius: 4px; color: white; font-weight: bold; cursor: pointer; }
   .key:hover { background: #4b5563; }
   .key .key-hint { display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: black; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; white-space: nowrap; z-index: 10; }
   .key:hover .key-hint { display: block; }
@@ -47,7 +54,7 @@ export function generateWordleHTML(word: WordleWord, maxGuesses: number): string
   const target = ${JSON.stringify(word.phonemes)};
   const targetEnglish = ${JSON.stringify(word.english)};
   const maxGuesses = ${maxGuesses};
-  const keyboardTokens = ${JSON.stringify(phonemeKeyboard)};
+  const keyboardTokens = ${JSON.stringify(keyboardTokens)};
   const phonemeLegend = ${JSON.stringify(phonemeLegend)};
 
   let guesses = [];
