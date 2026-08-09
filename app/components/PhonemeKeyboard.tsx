@@ -1,7 +1,8 @@
 "use client";
 
-import { phonemeKeyboard } from "../lib/phonemeKeyboard";
+import { getPhonemeKeyboard } from "../lib/phonemeKeyboard";
 import { phonemeLegend } from "../lib/phonemeLegend";
+import { useLocale } from "../context/LocaleContext";
 import PhonemeTile from "./PhonemeTile";
 import Button from "./Button";
 
@@ -18,14 +19,17 @@ export default function PhonemeKeyboard({
   onSubmit,
   disabled,
 }: PhonemeKeyboardProps) {
+  const { locale } = useLocale();
+  const keys = getPhonemeKeyboard(locale);
+
   return (
     <div className="flex flex-col items-center gap-3">
       <div className="flex flex-wrap gap-2 justify-center max-w-lg">
-        {phonemeKeyboard.map((token) => (
+        {keys.map((token) => (
           <PhonemeTile
             key={token}
             token={token}
-            size="sm"
+            size="kb"
             hint={phonemeLegend[token]}
             onClick={() => onKeyPress(token)}
             disabled={disabled}
