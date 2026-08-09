@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 import {
-  wordleWords,
+  wordleWordsByLocale,
   wordleDifficultySettings,
   WordleDifficulty,
 } from "../lib/wordleWords";
 import { evaluateGuess, GuessResult } from "../lib/wordleLogic";
 import { generateWordleHTML } from "../lib/generateWordleHTML";
 import { phonemeLegend } from "../lib/phonemeLegend";
+import { useLocale } from "../context/LocaleContext";
 import PageHeading from "../components/PageHeading";
 import DifficultySelector from "../components/DifficultySelector";
 import PhonemeTile from "../components/PhonemeTile";
@@ -20,6 +21,9 @@ const difficultyOptions = (
 ).map((key) => ({ value: key, label: wordleDifficultySettings[key].label }));
 
 export default function WordlePage() {
+  const { locale } = useLocale();
+  const wordleWords = wordleWordsByLocale[locale];
+
   const [difficulty, setDifficulty] = useState<WordleDifficulty>("medium");
   const [guesses, setGuesses] = useState<GuessResult[][]>([]);
   const [currentGuess, setCurrentGuess] = useState<string[]>([]);
@@ -34,7 +38,7 @@ export default function WordlePage() {
     setCurrentGuess([]);
     setStatus("playing");
     setRevealAnswer(false);
-  }, [difficulty]);
+  }, [difficulty, locale]);
 
   const handleKeyPress = (token: string) => {
     if (status !== "playing") return;
@@ -71,16 +75,16 @@ export default function WordlePage() {
     setStatus("playing");
   };
 
-  const handleGenerate = () => {
-    const html = generateWordleHTML(target, maxGuesses);
-    const blob = new Blob([html], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "phoneme-wordle.html";
-    link.click();
-    URL.revokeObjectURL(url);
-  };
+ const handleGenerate = () => {
+  const html = generateWordleHTML(target, maxGuesses, locale);
+  const blob = new Blob([html], { type: "text/html" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "phoneme-wordle.html";
+  link.click();
+  URL.revokeObjectURL(url);
+};
 
   return (
     <main className="flex flex-col items-center py-10 px-4 min-h-screen bg-white dark:bg-gray-900 transition-colors">
@@ -95,8 +99,8 @@ export default function WordlePage() {
         onChange={setDifficulty}
       />
 
-    {revealAnswer && (
-  <div className="mb-4 px-4 py-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-md font-medium">
+      {revealAnswer && (
+  <div className="mb-4 px-4 py-2 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 rounded-md font-medium phoneme-text">
     Answer: {target.phonemes.join(" ")} → {target.english}
   </div>
 )}
@@ -116,32 +120,32 @@ export default function WordlePage() {
               }
 
               return (
-                <PhonemeTile
-                  key={c}
-                  token={token}
-                  state={token ? state : "default"}
-                  hint={token ? phonemeLegend[token] : undefined}
-                  size="lg"
-                />
+              <PhonemeTile
+  key={c}
+  token={token}
+  state={token ? state : "default"}
+  hint={token ? phonemeLegend[token] : undefined}
+  size="lg"
+/>
               );
             })}
           </div>
         ))}
       </div>
 
-   <div className="min-h-[1.5em] mb-4 font-bold text-center">
-  {status === "won" && (
-    <span className="text-green-600 dark:text-green-400">
-      🎉 Correct! {target.phonemes.join(" ")} → {target.english}
-    </span>
-  )}
-  {status === "lost" && (
-    <span className="text-red-600 dark:text-red-400">
-      Out of guesses. The word was {target.phonemes.join(" ")} →{" "}
-      {target.english}
-    </span>
-  )}
-</div>
+      <div className="min-h-[1.5em] mb-4 font-bold text-center">
+        {status === "won" && (
+          <span className="text-green-600 dark:text-green-400">
+            🎉 Correct! {target.phonemes.join(" ")} → {target.english}
+          </span>
+        )}
+        {status === "lost" && (
+          <span className="text-red-600 dark:text-red-400">
+            Out of guesses. The word was {target.phonemes.join(" ")} →{" "}
+            {target.english}
+          </span>
+        )}
+      </div>
 
       <PhonemeKeyboard
         onKeyPress={handleKeyPress}
