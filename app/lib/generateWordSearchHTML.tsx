@@ -16,8 +16,8 @@ export function generateWordSearchHTML(
 <style>
   body { font-family: sans-serif; background: #111827; color: white; display: flex; flex-direction: column; align-items: center; padding: 24px; }
   h1 { margin-bottom: 4px; }
-  #grid { display: grid; grid-template-columns: repeat(${grid.length}, 40px); gap: 2px; margin: 20px 0; user-select: none; }
-  .cell { position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: #1f2937; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
+  #grid { display: grid; grid-template-columns: repeat(${grid.length}, minmax(0, 1fr)); gap: 2px; margin: 20px 0; user-select: none; max-width: ${grid.length * 40 + (grid.length - 1) * 2}px; width: 100%; }
+  .cell { position: relative; width: 100%; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; background: #1f2937; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: clamp(0.6rem, 3vw, 0.9rem); }
   .cell.selected { background: #4f46e5; }
   .cell.found { background: #16a34a; }
   .cell-hint { display: none; position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: black; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; white-space: nowrap; z-index: 10; }
