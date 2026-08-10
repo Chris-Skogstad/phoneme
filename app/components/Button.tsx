@@ -12,7 +12,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 const variantStyles: Record<ButtonVariant, string> = {
   primary: "bg-indigo-600 hover:bg-indigo-700 text-white",
   secondary: "bg-gray-700 hover:bg-gray-600 text-white",
-  warning: "bg-amber-600 hover:bg-amber-700 text-white",
+  warning: "bg-amber-700 hover:bg-amber-800 text-white",
   danger: "bg-red-600 hover:bg-red-700 text-white",
 };
 
