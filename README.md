@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Phoneme-Based Activity Builder
 
-## Getting Started
+A frontend builder that lets Speech Pathology teachers create phoneme-based classroom activities — a Wordle-style guessing game and a Word Search puzzle — and export them as standalone, downloadable HTML files that run in any browser.
 
-First, run the development server:
+Built for **Assessment 1** of a multi-stage project. This stage is frontend-only: word lists are fixed rather than database-driven, with database and dynamic word-list management planned for a later assessment.
+
+## Features
+
+- **Wordle Builder** — guess a phoneme-based word within a limited number of attempts, with phoneme-by-phoneme feedback (correct / wrong position / absent) and a matching on-screen phoneme keyboard
+- **Word Search Builder** — generates a grid of phoneme symbols hiding a small set of phoneme-based words, with adjustable difficulty (grid size)
+- **Phoneme hints** — hovering any phoneme symbol (on tiles, the keyboard, or word lists) shows its English letter equivalent, e.g. `/θ/` → "TH (as in thin)"
+- **Regional phoneme styles** — switch between Australian, British, and American phoneme transcriptions from Settings, affecting both activities
+- **Light/dark mode** — theme preference persists across visits via a cookie
+- **Cookie consent** — theme and locale cookies are only set after the user accepts a consent notice
+- **Responsive design** — activity grids and boards scale to fit smaller screens
+- **HTML export** — each activity can be downloaded as a single, self-contained `.html` file with no external dependencies, ready for students to open and play in any browser
+
+## Tech stack
+
+- [Next.js](https://nextjs.org/) (App Router) with TypeScript
+- [Tailwind CSS v4](https://tailwindcss.com/) for styling
+- React Context for theme and locale state
+
+## Project structure
+
+app/
+page.tsx → Home
+about/page.tsx → About
+wordle/page.tsx → Wordle builder
+word-search/page.tsx → Word Search builder
+settings/page.tsx → Settings (theme + phoneme style)
+components/ → Reusable UI components (Button, PhonemeTile, Nav, etc.)
+context/ → ThemeContext and LocaleContext (React Context + cookies)
+lib/ → Pure logic and data (word lists, grid generation, HTML export, phoneme legend)
+
+## Getting started
+
+Install dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Author
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Christopher Skogstad
+Student Number: 21198609
