@@ -52,20 +52,17 @@ export default function AboutPage() {
         </p>
       </InfoSection>
 
+     
       <InfoSection title="How to use this website">
-        <div className="aspect-video w-full bg-gray-200 dark:bg-gray-800 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400">
-          Video placeholder — embed link here
-        </div>
-      </InfoSection>
-
-      <InfoSection title="Author">
-        <p className="font-medium text-gray-900 dark:text-white">
-          Christopher Skogstad
-        </p>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
-          Student Number: 21198609
-        </p>
-      </InfoSection>
+  <div className="aspect-video w-full rounded-lg overflow-hidden">
+    <iframe
+      className="w-full h-full"
+      src="https://www.youtube.com/embed/Q6H0KXYtN7E"
+      title="How to use this website"
+      allowFullScreen
+    />
+  </div>
+</InfoSection>
     </main>
   );
 }
